@@ -10,6 +10,8 @@ from .models import Article, Comment, Tag
 from .renderers import ArticleJSONRenderer, CommentJSONRenderer
 from .serializers import ArticleSerializer, CommentSerializer, TagSerializer
 
+from ddtrace import tracer
+
 
 class ArticleViewSet(mixins.CreateModelMixin, 
                      mixins.ListModelMixin,
@@ -22,6 +24,7 @@ class ArticleViewSet(mixins.CreateModelMixin,
     renderer_classes = (ArticleJSONRenderer,)
     serializer_class = ArticleSerializer
 
+    @tracer.wrap()
     def get_queryset(self):
         queryset = self.queryset
 
@@ -41,6 +44,7 @@ class ArticleViewSet(mixins.CreateModelMixin,
 
         return queryset
 
+    @tracer.wrap()
     def create(self, request):
         serializer_context = {
             'author': request.user.profile,

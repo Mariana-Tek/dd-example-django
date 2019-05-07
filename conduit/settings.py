@@ -25,7 +25,7 @@ SECRET_KEY = '2^f+3@v7$v1f8yt0!s)3-1t$)tlp+xm17=*g))_xoi&&9m#2a&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'conduit.apps.authentication',
     'conduit.apps.core',
     'conduit.apps.profiles',
+    'ddtrace.contrib.django'
 ]
 
 MIDDLEWARE = [
@@ -132,6 +133,7 @@ STATIC_URL = '/static/'
 CORS_ORIGIN_WHITELIST = (
     '0.0.0.0:4000',
     'localhost:4000',
+    'localhost:4100',
 )
 
 # Tell Django about the custom `User` model we created. The string
@@ -149,4 +151,11 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,
+}
+
+# Datadog Settings
+DATADOG_TRACE = {
+    'DEFAULT_SERVICE': 'test-django-app',
+    'TAGS': {'env': 'local'},
+    'ENABLED': True
 }
